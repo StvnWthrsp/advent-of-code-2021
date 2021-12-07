@@ -16,14 +16,18 @@ for i, line in enumerate(lines):
     for num in num_list:
         board_numbers.append(num)
 
-def checkForWin(board_numbers, called_indexes, num):
+def checkForWin(board_numbers, called_indexes, num, score_map):
     winners = []
     for i, space in enumerate(board_numbers):
         if space == num:
             called_indexes.append(i)
 
-            # Check for win based on indexes
+            # If board has already won, skip it
             board_index = i // 25
+            if board_index in score_map.keys():
+                continue
+
+            # Check for win based on indexes
             row_pos = i % 5
             row_start = i - row_pos
             col_start = i - (i % 25 - row_pos)
@@ -49,7 +53,7 @@ last_winner = -1
 
 for num in number_sequence:
     winners = None
-    winners = checkForWin(board_numbers, called_indexes, num)
+    winners = checkForWin(board_numbers, called_indexes, num, score_map)
     if winners:
         for board in winners:
             if board in score_map.keys():
